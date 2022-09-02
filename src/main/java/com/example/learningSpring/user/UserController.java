@@ -1,4 +1,4 @@
-package user;
+package com.example.learningSpring.user;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
 
+
     @CrossOrigin
     @PostMapping("/api/1.0/users")
-    public void CreateUser(@RequestBody User user){}
+    public void CreateUser(@RequestBody User user){
+        System.out.println(user);
+    }
 
 }

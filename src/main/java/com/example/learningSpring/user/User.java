@@ -1,4 +1,4 @@
-package user;
+package com.example.learningSpring.user;
 import lombok.Data;
 
 @Data
