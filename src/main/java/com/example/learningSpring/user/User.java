@@ -8,7 +8,11 @@ import javax.persistence.*;
 public class User {
     @Id
     @GeneratedValue
-    private String id;
+    private long id;
+
+    private String username;
+
     private String name;
+
     private String password;
 }

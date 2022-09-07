@@ -1,5 +1,6 @@
 package com.example.learningSpring.user;
 
+import com.example.learningSpring.shared.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,8 +17,9 @@ public class UserController {
 
     @CrossOrigin
     @PostMapping("/api/1.0/users")
-    public void CreateUser(@RequestBody User user){
+    public GenericResponse CreateUser(@RequestBody User user){
         userService.save(user);
+        return new GenericResponse("user created");
     }
 
 }
