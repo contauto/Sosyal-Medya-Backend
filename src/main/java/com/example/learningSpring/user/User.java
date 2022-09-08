@@ -1,6 +1,7 @@
 package com.example.learningSpring.user;
 import lombok.Data;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
@@ -10,9 +11,12 @@ public class User {
     @GeneratedValue
     private long id;
 
+    @NotNull
     private String username;
 
+    @NotNull
     private String name;
 
+    @NotNull
     private String password;
 }
