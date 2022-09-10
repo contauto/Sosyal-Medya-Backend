@@ -14,17 +14,17 @@ public class User {
     private long id;
 
 
-    @NotNull
+    @NotNull(message="{learningSpring.Username.NotNull.Message}")
     @Size(min = 3,max = 48)
     @UniqueUsername
     private String username;
 
     @Size(min = 2,max = 64)
-    @NotNull
+    @NotNull(message="{learningSpring.Name.NotNull.Message}")
     private String name;
 
     @Size(min = 8,max = 64)
-    @Pattern(regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$")
-    @NotNull
+    @Pattern(regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$",message="{learningSpring.Password.Pattern.Message}")
+    @NotNull(message="{learningSpring.Password.NotNull.Message}")
     private String password;
 }
