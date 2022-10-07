@@ -18,11 +18,14 @@ public class LearningSpringApplication {
 	@Bean
 	CommandLineRunner commandLineRunner(UserService userService){
 		return (args) -> {
+			for (int i = 0; i < 10 ; i++) {
+
 				User user = new User();
-				user.setUsername("user1");
-				user.setName("User");
+				user.setUsername("user"+i);
+				user.setName("name"+i);
 				user.setPassword("P4ssword");
 				userService.save(user);
+			}
 		};
 
 	}
