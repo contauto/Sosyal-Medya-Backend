@@ -1,3 +1,8 @@
 spring:
   datasource:
     generate-unique-name: false
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        max-page-size: 100

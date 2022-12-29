@@ -23,7 +23,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public List<User> getUsers() {
-      return userRepository.findAll();
+    public Page<User> getUsers(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 }

@@ -34,8 +34,8 @@ public class UserController {
 
     @GetMapping("/api/1.0/users")
     @JsonView(Views.Base.class)
-    List<User> getUsers(){
-        return userService.getUsers();
+    Page<User> getUsers(Pageable pageable){
+        return userService.getUsers(pageable);
     }
 
 }
