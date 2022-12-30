@@ -2,7 +2,6 @@ package com.example.learningSpring.user;
 
 import com.example.learningSpring.error.ApiError;
 import com.example.learningSpring.shared.GenericResponse;
-import com.example.learningSpring.shared.Views;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

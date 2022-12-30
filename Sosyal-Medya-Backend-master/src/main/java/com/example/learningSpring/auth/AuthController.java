@@ -2,7 +2,6 @@ package com.example.learningSpring.auth;
 
 
 import com.example.learningSpring.shared.CurrentUser;
-import com.example.learningSpring.shared.Views;
 import com.example.learningSpring.user.User;
 import com.example.learningSpring.user.UserRepository;
 import com.fasterxml.jackson.annotation.JsonView;

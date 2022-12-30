@@ -1,6 +1,4 @@
 package com.example.learningSpring.user;
-import com.example.learningSpring.shared.Views;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,22 +23,18 @@ public class User implements UserDetails {
     @NotNull(message="{learningSpring.Username.NotNull.Message}")
     @Size(min = 3,max = 48)
     @UniqueUsername
-    @JsonView(Views.Base.class)
     private String username;
 
     @Size(min = 2,max = 64)
     @NotNull(message="{learningSpring.Name.NotNull.Message}")
-    @JsonView(Views.Base.class)
     private String name;
 
     @Size(min = 8,max = 64)
     @Pattern(regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$",message="{learningSpring.Password.Pattern.Message}")
     @NotNull(message="{learningSpring.Password.NotNull.Message}")
-    @JsonView(Views.Sensitive.class)
     private String password;
 
 
-    @JsonView(Views.Base.class)
     private String image;
 
     @Override

@@ -1,5 +1,4 @@
 package com.example.learningSpring.user;
-import com.example.learningSpring.shared.Views;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;

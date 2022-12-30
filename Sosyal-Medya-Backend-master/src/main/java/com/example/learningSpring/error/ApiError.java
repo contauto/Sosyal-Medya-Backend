@@ -1,6 +1,5 @@
 package com.example.learningSpring.error;
 
-import com.example.learningSpring.shared.Views;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
