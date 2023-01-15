@@ -1,4 +1,5 @@
 package com.example.learningSpring.user;
+import com.example.learningSpring.error.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +26,22 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public Page<User> getUsers(Pageable pageable) {
-      return userRepository.findAll(pageable);
+
+    public Page<User> getUsers(User user,Pageable pageable){
+        if(user!=null){
+            return  userRepository.findByUsernameNot(user.getUsername(),pageable);
+        }
+        return  userRepository.findAll(pageable);
     }
+
+    public User getByUsername(String username){
+        User inDB=userRepository.findByUsername(username);
+        if(inDB==null){
+            throw new NotFoundException();
+        }
+        else{
+            return  inDB;
+        }
+    }
+
 }

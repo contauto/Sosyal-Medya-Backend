@@ -1,4 +1,5 @@
 package com.example.learningSpring.user;
+import com.example.learningSpring.shared.CurrentUser;
 import com.example.learningSpring.shared.GenericResponse;
 import com.example.learningSpring.user.Dtos.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +11,14 @@ import javax.validation.Valid;
 
 
 @RestController
+@RequestMapping("/api/1.0")
 public class UserController {
 
     @Autowired
     UserService userService;
 
     @CrossOrigin
-    @PostMapping("/api/1.0/users")
+    @PostMapping("/users")
     public GenericResponse CreateUser(@Valid @RequestBody User user) {
 
 
@@ -24,9 +26,15 @@ public class UserController {
         return new GenericResponse("user created");
     }
 
-    @GetMapping("/api/1.0/users")
-    Page<UserDto> getUsers(Pageable pageable){
-        return userService.getUsers(pageable).map(UserDto::new);
+    @GetMapping("/users")
+    Page<UserDto> getUsers(@CurrentUser User user,Pageable pageable){
+        return userService.getUsers(user,pageable).map(UserDto::new);
+    }
+
+    @GetMapping("/users/{username}")
+    UserDto getUser(@PathVariable String username){
+        User user=userService.getByUsername(username);
+        return new UserDto(user);
     }
 
 }
