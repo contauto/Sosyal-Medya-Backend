@@ -1,12 +1,11 @@
 package com.example.learningSpring.user;
+
 import com.example.learningSpring.error.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.learningSpring.user.Dtos.UserUpdateDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
@@ -15,9 +14,9 @@ public class UserService {
     UserRepository userRepository;
     PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository,PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.passwordEncoder=passwordEncoder;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -27,21 +26,27 @@ public class UserService {
     }
 
 
-    public Page<User> getUsers(User user,Pageable pageable){
-        if(user!=null){
-            return  userRepository.findByUsernameNot(user.getUsername(),pageable);
+    public Page<User> getUsers(User user, Pageable pageable) {
+        if (user != null) {
+            return userRepository.findByUsernameNot(user.getUsername(), pageable);
         }
-        return  userRepository.findAll(pageable);
+        return userRepository.findAll(pageable);
     }
 
-    public User getByUsername(String username){
-        User inDB=userRepository.findByUsername(username);
-        if(inDB==null){
+    public User getByUsername(String username) {
+        User inDB = userRepository.findByUsername(username);
+        if (inDB == null) {
             throw new NotFoundException();
+        } else {
+            return inDB;
         }
-        else{
-            return  inDB;
-        }
+    }
+
+    public User updateUser(String username, UserUpdateDto userUpdateDto) {
+        User inDB = getByUsername(username);
+        inDB.setName(userUpdateDto.getName());
+        return userRepository.save(inDB);
+
     }
 
 }
