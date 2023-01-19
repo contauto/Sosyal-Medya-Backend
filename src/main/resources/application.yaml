@@ -6,3 +6,20 @@ spring:
       pageable:
         default-page-size: 10
         max-page-size: 100
+  profiles:
+    active:
+      - dev
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+socio:
+  upload-path: storage-dev
+---
+spring:
+  config:
+    activate:
+      on-profile: production
+socio:
+  upload-path: storage-production

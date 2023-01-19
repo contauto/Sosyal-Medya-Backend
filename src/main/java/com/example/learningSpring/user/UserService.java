@@ -1,11 +1,14 @@
 package com.example.learningSpring.user;
 
 import com.example.learningSpring.error.NotFoundException;
+import com.example.learningSpring.file.FileService;
 import com.example.learningSpring.user.Dtos.UserUpdateDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 @Service
 public class UserService {
@@ -13,10 +16,12 @@ public class UserService {
 
     UserRepository userRepository;
     PasswordEncoder passwordEncoder;
+    FileService fileService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, FileService fileService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.fileService = fileService;
     }
 
 
@@ -44,7 +49,17 @@ public class UserService {
 
     public User updateUser(String username, UserUpdateDto userUpdateDto) {
         User inDB = getByUsername(username);
+        String oldImageName = inDB.getImage();
         inDB.setName(userUpdateDto.getName());
+        if (userUpdateDto.getImage() != null) {
+            try {
+                String storedFileName = fileService.writeBase64EncodedStringToFile(userUpdateDto.getImage());
+                inDB.setImage(storedFileName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            fileService.deleteFile(oldImageName);
+        }
         return userRepository.save(inDB);
 
     }
