@@ -1,7 +1,7 @@
 package com.example.learningSpring.file;
 
 import com.example.learningSpring.configs.AppConfigs;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.tika.Tika;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -15,8 +15,16 @@ import java.util.UUID;
 
 @Service
 public class FileService {
-    @Autowired
+
     AppConfigs appConfigs;
+    Tika tika;
+
+    public FileService(AppConfigs appConfigs) {
+        super();
+        this.appConfigs = appConfigs;
+        this.tika = new Tika();
+    }
+
 
     public String writeBase64EncodedStringToFile(String image) throws IOException {
         String fileName = generateRandomName();
@@ -44,4 +52,8 @@ public class FileService {
         }
     }
 
+    public String detectType(String value) {
+        byte[] base64Decoded = Base64.getDecoder().decode(value);
+        return tika.detect(base64Decoded);
+    }
 }
