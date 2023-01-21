@@ -1,5 +1,7 @@
 package com.example.learningSpring;
 
+import com.example.learningSpring.sos.Sos;
+import com.example.learningSpring.sos.SosService;
 import com.example.learningSpring.user.User;
 import com.example.learningSpring.user.UserService;
 import org.springframework.boot.CommandLineRunner;
@@ -17,7 +19,7 @@ public class LearningSpringApplication {
 
     @Bean
     @Profile("dev")
-    CommandLineRunner commandLineRunner(UserService userService) {
+    CommandLineRunner commandLineRunner(UserService userService, SosService sosService) {
         return (args) -> {
             for (int i = 0; i < 10; i++) {
 
@@ -26,6 +28,13 @@ public class LearningSpringApplication {
                 user.setName("name" + i);
                 user.setPassword("P4ssword");
                 userService.save(user);
+            }
+
+            for (int i = 0; i < 50; i++) {
+                Sos sos = new Sos();
+                sos.setContent("sos-" + i);
+                sosService.save(sos);
+
             }
         };
 
