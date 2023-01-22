@@ -1,5 +1,5 @@
 package com.example.learningSpring.user;
-import com.fasterxml.jackson.annotation.JsonView;
+
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -13,25 +13,25 @@ import java.util.Collection;
 
 @Data
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
 
-    @NotNull(message="{learningSpring.Username.NotNull.Message}")
-    @Size(min = 3,max = 48)
+    @NotNull(message = "{learningSpring.Username.NotNull.Message}")
+    @Size(min = 3, max = 48)
     @UniqueUsername
     private String username;
 
-    @Size(min = 2,max = 64)
-    @NotNull(message="{learningSpring.Name.NotNull.Message}")
+    @Size(min = 2, max = 64)
+    @NotNull(message = "{learningSpring.Name.NotNull.Message}")
     private String name;
 
-    @Size(min = 8,max = 64)
-    @Pattern(regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$",message="{learningSpring.Password.Pattern.Message}")
-    @NotNull(message="{learningSpring.Password.NotNull.Message}")
+    @Size(min = 8, max = 64)
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = "{learningSpring.Password.Pattern.Message}")
+    @NotNull(message = "{learningSpring.Password.NotNull.Message}")
     private String password;
 
 

@@ -21,19 +21,19 @@ public class LearningSpringApplication {
     @Profile("dev")
     CommandLineRunner commandLineRunner(UserService userService, SosService sosService) {
         return (args) -> {
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 15; i++) {
 
                 User user = new User();
                 user.setUsername("user" + i);
                 user.setName("name" + i);
                 user.setPassword("P4ssword");
                 userService.save(user);
-            }
-
-            for (int i = 0; i < 50; i++) {
-                Sos sos = new Sos();
-                sos.setContent("sos-" + i);
-                sosService.save(sos);
+                for (int j = 0; j < 15; j++) {
+                    Sos sos = new Sos();
+                    sos.setContent("sos-" + j + "  " + user.getName());
+                    sos.setUser(user);
+                    sosService.save(sos, user);
+                }
 
             }
         };
