@@ -41,4 +41,8 @@ public class SosService {
         User inDB = userService.getByUsername(username);
         return sosRepository.findByIdLessThanAndUser(id, pageable, inDB);
     }
+
+    public long getNewSossesCount(long id) {
+        return sosRepository.countByIdGreaterThan(id);
+    }
 }

@@ -12,4 +12,6 @@ public interface SosRepository extends JpaRepository<Sos, Long> {
     Page<Sos> findByIdLessThan(long id, Pageable page);
 
     Page<Sos> findByIdLessThanAndUser(long id, Pageable pageable, User user);
+
+    long countByIdGreaterThan(long id);
 }

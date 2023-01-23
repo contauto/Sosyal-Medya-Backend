@@ -9,9 +9,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/1.0")
@@ -36,12 +39,21 @@ public class SosController {
     }
 
     @GetMapping("/sosses/{id:[0-9]+}")
-    Page<SosDto> getSossesRelative(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable, @PathVariable long id) {
-        return sosService.getOldSosses(id, pageable).map(SosDto::new);
+    ResponseEntity<?> getSossesRelative(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable, @PathVariable long id, @RequestParam(name = "count", required = false, defaultValue = "false") boolean count) {
+        if (count) {
+            long newSosCount = sosService.getNewSossesCount(id);
+            Map<String, Long> response = new HashMap<>();
+            response.put("count", newSosCount);
+            System.out.println(response);
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.ok(sosService.getOldSosses(id, pageable).map(SosDto::new));
     }
 
     @GetMapping("/users/{username}/sosses/{id:[0-9]+}")
     Page<SosDto> getUserSossesRelative(@PathVariable long id, @PathVariable String username, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return sosService.getOldSossesOfUser(id, username, pageable).map(SosDto::new);
     }
+
+
 }
