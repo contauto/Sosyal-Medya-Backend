@@ -4,14 +4,9 @@ import com.example.learningSpring.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface SosRepository extends JpaRepository<Sos, Long> {
+public interface SosRepository extends JpaRepository<Sos, Long>, JpaSpecificationExecutor<Sos> {
 
     Page<Sos> findByUser(User user, Pageable pageable);
-
-    Page<Sos> findByIdLessThan(long id, Pageable page);
-
-    Page<Sos> findByIdLessThanAndUser(long id, Pageable pageable, User user);
-
-    long countByIdGreaterThan(long id);
 }

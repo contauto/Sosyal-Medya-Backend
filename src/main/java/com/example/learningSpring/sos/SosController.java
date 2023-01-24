@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/1.0")
@@ -38,21 +40,26 @@ public class SosController {
         return sosService.getSossesFromUser(username, pageable).map(SosDto::new);
     }
 
-    @GetMapping("/sosses/{id:[0-9]+}")
-    ResponseEntity<?> getSossesRelative(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable, @PathVariable long id, @RequestParam(name = "count", required = false, defaultValue = "false") boolean count) {
+    @GetMapping({"/sosses/{id:[0-9]+}", "/users/{username}/sosses/{id:[0-9]+}"})
+    ResponseEntity<?> getSossesRelative(
+            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+            @PathVariable long id,
+            @PathVariable(required = false) String username,
+            @RequestParam(name = "count", required = false, defaultValue = "false") boolean count,
+            @RequestParam(name = "direction", defaultValue = "before") String direction) {
         if (count) {
-            long newSosCount = sosService.getNewSossesCount(id);
+            long newSosCount = sosService.getNewSossesCount(id, username);
             Map<String, Long> response = new HashMap<>();
             response.put("count", newSosCount);
-            System.out.println(response);
             return ResponseEntity.ok(response);
         }
-        return ResponseEntity.ok(sosService.getOldSosses(id, pageable).map(SosDto::new));
-    }
 
-    @GetMapping("/users/{username}/sosses/{id:[0-9]+}")
-    Page<SosDto> getUserSossesRelative(@PathVariable long id, @PathVariable String username, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        return sosService.getOldSossesOfUser(id, username, pageable).map(SosDto::new);
+        if (direction.equals("after")) {
+            List<SosDto> newSosses = sosService.getNewSosses(id, pageable.getSort(), username).stream().map(SosDto::new).collect(Collectors.toList());
+            return ResponseEntity.ok(newSosses);
+        }
+
+        return ResponseEntity.ok(sosService.getOldSosses(id, username, pageable).map(SosDto::new));
     }
 
 
