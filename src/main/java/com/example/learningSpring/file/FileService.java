@@ -3,6 +3,7 @@ package com.example.learningSpring.file;
 import com.example.learningSpring.configs.AppConfigs;
 import org.apache.tika.Tika;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -55,5 +56,19 @@ public class FileService {
     public String detectType(String value) {
         byte[] base64Decoded = Base64.getDecoder().decode(value);
         return tika.detect(base64Decoded);
+    }
+
+    public String saveSosAttachment(MultipartFile multipartFile) {
+        String fileName = generateRandomName();
+        File target = new File(appConfigs.getUploadPath() + "/" + fileName);
+        try {
+            OutputStream outputStream = new FileOutputStream(target);
+            outputStream.write(multipartFile.getBytes());
+            outputStream.close();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return fileName;
     }
 }
