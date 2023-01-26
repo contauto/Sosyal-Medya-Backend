@@ -1,5 +1,8 @@
 package com.example.learningSpring.sos;
 
+import com.example.learningSpring.file.FileAttachment;
+import com.example.learningSpring.file.FileAttachmentRepository;
+import com.example.learningSpring.sos.Dtos.SosSubmitDto;
 import com.example.learningSpring.user.User;
 import com.example.learningSpring.user.UserRepository;
 import com.example.learningSpring.user.UserService;
@@ -11,24 +14,35 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SosService {
     SosRepository sosRepository;
     UserService userService;
+    FileAttachmentRepository fileAttachmentRepository;
     private final UserRepository userRepository;
 
     public SosService(SosRepository sosRepository, UserService userService,
-                      UserRepository userRepository) {
+                      UserRepository userRepository, FileAttachmentRepository fileAttachmentRepository) {
         this.sosRepository = sosRepository;
         this.userService = userService;
         this.userRepository = userRepository;
+        this.fileAttachmentRepository = fileAttachmentRepository;
     }
 
-    public void save(Sos sos, User user) {
+    public void save(SosSubmitDto sosSubmitDto, User user) {
+        Sos sos = new Sos();
+        sos.setContent(sosSubmitDto.getContent());
         sos.setTimestamp(new Date());
         sos.setUser(user);
         sosRepository.save(sos);
+        Optional<FileAttachment> optionalFileAttachment = fileAttachmentRepository.findById(sosSubmitDto.getAttachmentId());
+        if (optionalFileAttachment.isPresent()) {
+            FileAttachment fileAttachment = optionalFileAttachment.get();
+            fileAttachment.setSos(sos);
+            fileAttachmentRepository.save(fileAttachment);
+        }
     }
 
     public Page<Sos> getSosses(Pageable pageable) {

@@ -3,6 +3,7 @@ package com.example.learningSpring.sos;
 import com.example.learningSpring.shared.CurrentUser;
 import com.example.learningSpring.shared.GenericResponse;
 import com.example.learningSpring.sos.Dtos.SosDto;
+import com.example.learningSpring.sos.Dtos.SosSubmitDto;
 import com.example.learningSpring.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,8 +26,8 @@ public class SosController {
     SosService sosService;
 
     @PostMapping("/sosses")
-    GenericResponse saveSos(@Valid @RequestBody Sos sos, @CurrentUser User user) {
-        sosService.save(sos, user);
+    GenericResponse saveSos(@Valid @RequestBody SosSubmitDto sosSubmitDto, @CurrentUser User user) {
+        sosService.save(sosSubmitDto, user);
         return new GenericResponse("Sos is saved");
     }
 

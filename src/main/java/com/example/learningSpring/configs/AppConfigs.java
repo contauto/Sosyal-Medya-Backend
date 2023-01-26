@@ -9,4 +9,14 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "socio")
 public class AppConfigs {
     private String uploadPath;
+    private String profilePhotoStorage = "profile-photo";
+    private String attachmentStorage = "attachments";
+
+    public String getAttachmentStoragePath() {
+        return uploadPath + "/" + attachmentStorage;
+    }
+
+    public String getProfilePhotoStoragePath() {
+        return uploadPath + "/" + profilePhotoStorage;
+    }
 }

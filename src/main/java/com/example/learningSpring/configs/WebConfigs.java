@@ -24,11 +24,17 @@ public class WebConfigs implements WebMvcConfigurer {
     @Bean
     CommandLineRunner createStorageDirectories() {
         return args -> {
-            File folder = new File(appConfigs.getUploadPath());
-            boolean folderExist = folder.exists() && folder.isDirectory();
-            if (!folderExist) {
-                folder.mkdir();
-            }
+            createFolder(appConfigs.getUploadPath());
+            createFolder(appConfigs.getAttachmentStoragePath());
+            createFolder(appConfigs.getProfilePhotoStoragePath());
         };
+    }
+
+    private void createFolder(String path) {
+        File folder = new File(path);
+        boolean folderExist = folder.exists() && folder.isDirectory();
+        if (!folderExist) {
+            folder.mkdir();
+        }
     }
 }

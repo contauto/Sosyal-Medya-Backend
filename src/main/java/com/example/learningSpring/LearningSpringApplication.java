@@ -1,6 +1,6 @@
 package com.example.learningSpring;
 
-import com.example.learningSpring.sos.Sos;
+import com.example.learningSpring.sos.Dtos.SosSubmitDto;
 import com.example.learningSpring.sos.SosService;
 import com.example.learningSpring.user.User;
 import com.example.learningSpring.user.UserService;
@@ -29,9 +29,8 @@ public class LearningSpringApplication {
                 user.setPassword("P4ssword");
                 userService.save(user);
                 for (int j = 0; j < 15; j++) {
-                    Sos sos = new Sos();
+                    SosSubmitDto sos = new SosSubmitDto();
                     sos.setContent("sos-" + j + "  " + user.getName());
-                    sos.setUser(user);
                     sosService.save(sos, user);
                 }
 
