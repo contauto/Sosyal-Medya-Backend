@@ -19,7 +19,7 @@ public class Sos {
     private Date timestamp;
     @ManyToOne
     private User user;
-    @OneToOne(mappedBy = "sos")
+    @OneToOne(mappedBy = "sos", cascade = CascadeType.REMOVE)
     private FileAttachment fileAttachment;
 
 }

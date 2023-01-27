@@ -1,6 +1,7 @@
 package com.example.learningSpring.file;
 
 import com.example.learningSpring.configs.AppConfigs;
+import com.example.learningSpring.user.User;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.tika.Tika;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -38,7 +39,7 @@ public class FileService {
 
     public String writeBase64EncodedStringToFile(String image) throws IOException {
         String fileName = generateRandomName();
-        File file = new File(appConfigs.getProfilePhotoStoragePath());
+        File file = new File(appConfigs.getProfilePhotoStoragePath() + "/" + fileName);
         OutputStream outputStream = new FileOutputStream(file);
         byte[] base64Decoded = Base64.getDecoder().decode(image);
         outputStream.write(base64Decoded);
@@ -111,6 +112,14 @@ public class FileService {
         for (FileAttachment fileAttachment : filesToBeDeleted) {
             deleteAttachmentFile(fileAttachment.getName());
             fileAttachmentRepository.deleteById(fileAttachment.getId());
+        }
+    }
+
+    public void deleteAllStoredFilesForUser(User user) {
+        deleteProfilePhoto(user.getImage());
+        List<FileAttachment> fileAttachments = fileAttachmentRepository.findBySosUser(user);
+        for (FileAttachment fileAttachment : fileAttachments) {
+            deleteAttachmentFile(fileAttachment.getName());
         }
     }
 }

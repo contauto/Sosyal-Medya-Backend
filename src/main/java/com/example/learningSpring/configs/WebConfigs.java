@@ -18,7 +18,7 @@ public class WebConfigs implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/images/**").addResourceLocations("file:./" + appConfigs.getUploadPath() + "/").setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS));
+        registry.addResourceHandler("/files/**").addResourceLocations("file:./" + appConfigs.getUploadPath() + "/").setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS));
     }
 
     @Bean

@@ -2,9 +2,9 @@ package com.example.learningSpring.sos;
 
 import com.example.learningSpring.file.FileAttachment;
 import com.example.learningSpring.file.FileAttachmentRepository;
+import com.example.learningSpring.file.FileService;
 import com.example.learningSpring.sos.Dtos.SosSubmitDto;
 import com.example.learningSpring.user.User;
-import com.example.learningSpring.user.UserRepository;
 import com.example.learningSpring.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,17 +19,17 @@ import java.util.Optional;
 @Service
 public class SosService {
     SosRepository sosRepository;
-    UserService userService;
     FileAttachmentRepository fileAttachmentRepository;
-    private final UserRepository userRepository;
+    FileService fileService;
+    UserService userService;
 
-    public SosService(SosRepository sosRepository, UserService userService,
-                      UserRepository userRepository, FileAttachmentRepository fileAttachmentRepository) {
+    public SosService(SosRepository sosRepository, FileAttachmentRepository fileAttachmentRepository, FileService fileService, UserService userService) {
         this.sosRepository = sosRepository;
-        this.userService = userService;
-        this.userRepository = userRepository;
         this.fileAttachmentRepository = fileAttachmentRepository;
+        this.fileService = fileService;
+        this.userService = userService;
     }
+
 
     public void save(SosSubmitDto sosSubmitDto, User user) {
         Sos sos = new Sos();
@@ -81,23 +81,28 @@ public class SosService {
         return sosRepository.findAll(sosSpecification, sort);
     }
 
+    public void delete(long id) {
+
+        Sos inDB = sosRepository.getReferenceById(id);
+        if (inDB.getFileAttachment() != null) {
+            String fileName = inDB.getFileAttachment().getName();
+            fileService.deleteAttachmentFile(fileName);
+        }
+        sosRepository.deleteById(id);
+    }
+
     Specification<Sos> findByIdGreaterThan(long id) {
-        return (root, query, criteriaBuilder) -> {
-            return criteriaBuilder.greaterThan(root.get("id"), id);
-        };
+        return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThan(root.get("id"), id);
     }
 
     Specification<Sos> findByIdLessThan(long id) {
-        return (root, query, criteriaBuilder) -> {
-            return criteriaBuilder.lessThan(root.get("id"), id);
-        };
+        return (root, query, criteriaBuilder) -> criteriaBuilder.lessThan(root.get("id"), id);
 
     }
 
     Specification<Sos> findByUser(User user) {
-        return (root, query, criteriaBuilder) -> {
-            return criteriaBuilder.equal(root.get("user"), user);
-        };
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("user"), user);
     }
+
 
 }

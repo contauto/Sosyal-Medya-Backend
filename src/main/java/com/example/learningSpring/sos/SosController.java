@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -61,6 +62,13 @@ public class SosController {
         }
 
         return ResponseEntity.ok(sosService.getOldSosses(id, username, pageable).map(SosDto::new));
+    }
+
+    @DeleteMapping("/sosses/{id:[0-9]+}")
+    @PreAuthorize("@sosSecurity.isAllowedToDelete(#id,principal)")
+    GenericResponse deleteSos(@PathVariable long id) {
+        sosService.delete(id);
+        return new GenericResponse("Sos removed");
     }
 
 

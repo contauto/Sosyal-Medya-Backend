@@ -49,9 +49,9 @@ public class UserService {
 
     public User updateUser(String username, UserUpdateDto userUpdateDto) {
         User inDB = getByUsername(username);
-        String oldImageName = inDB.getImage();
         inDB.setName(userUpdateDto.getName());
         if (userUpdateDto.getImage() != null) {
+            String oldImageName = inDB.getImage();
             try {
                 String storedFileName = fileService.writeBase64EncodedStringToFile(userUpdateDto.getImage());
                 inDB.setImage(storedFileName);
@@ -62,6 +62,12 @@ public class UserService {
         }
         return userRepository.save(inDB);
 
+    }
+
+    public void deleteUser(String username) {
+        User inDB = userRepository.findByUsername(username);
+        fileService.deleteAllStoredFilesForUser(inDB);
+        userRepository.delete(inDB);
     }
 
 }
