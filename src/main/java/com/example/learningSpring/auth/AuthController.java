@@ -1,24 +1,28 @@
 package com.example.learningSpring.auth;
 
 
-import com.example.learningSpring.shared.CurrentUser;
-import com.example.learningSpring.user.Dtos.UserDto;
-import com.example.learningSpring.user.User;
-import com.example.learningSpring.user.UserRepository;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.example.learningSpring.shared.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class AuthController {
     @Autowired
-    UserRepository userRepository;
+    AuthService authService;
 
     @PostMapping("/api/1.0/auth")
-    UserDto HandleAuthentication(@CurrentUser User user) {
-        return new UserDto(user);
+    AuthResponse handleAuthentication(@RequestBody Credentials credentials) {
+        return authService.auth(credentials);
+    }
+
+    @PostMapping("/api/1.0/logout")
+    GenericResponse handleLogout(@RequestHeader(name = "Authorization") String authorization) {
+        String token = authorization.substring(7);
+        authService.clearToken(token);
+        return new GenericResponse("Logout success");
     }
 
 }

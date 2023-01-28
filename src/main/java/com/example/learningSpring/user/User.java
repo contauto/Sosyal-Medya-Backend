@@ -1,5 +1,7 @@
 package com.example.learningSpring.user;
 
+import com.example.learningSpring.auth.Token;
+import com.example.learningSpring.sos.AppropriateWord;
 import com.example.learningSpring.sos.Sos;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,11 +24,14 @@ public class User implements UserDetails {
     private long id;
 
 
+    @AppropriateWord
     @NotNull(message = "{learningSpring.Username.NotNull.Message}")
     @Size(min = 3, max = 48)
     @UniqueUsername
     private String username;
 
+
+    @AppropriateWord
     @Size(min = 2, max = 64)
     @NotNull(message = "{learningSpring.Name.NotNull.Message}")
     private String name;
@@ -38,6 +43,7 @@ public class User implements UserDetails {
 
 
     private String image;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -66,4 +72,7 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Sos> sosses;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Token> tokens;
 }

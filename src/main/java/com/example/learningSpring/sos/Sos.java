@@ -22,4 +22,13 @@ public class Sos {
     @OneToOne(mappedBy = "sos", cascade = CascadeType.REMOVE)
     private FileAttachment fileAttachment;
 
+    public Sos(String content, Date timestamp, User user) {
+        this.content = content;
+        this.timestamp = timestamp;
+        this.user = user;
+    }
+
+    public Sos() {
+
+    }
 }
